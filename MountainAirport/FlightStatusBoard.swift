@@ -32,6 +32,19 @@
 
 import SwiftUI
 
+struct FlightList: View {
+  var flights: [FlightInformation]
+
+  var body: some View {
+    List(flights, id: \.id) { flight in
+      NavigationLink(
+        flight.statusBoardName,
+        destination: FlightDetails(flight: flight)
+      )
+    }
+  }
+}
+
 struct FlightStatusBoard: View {
     
     var flights: [FlightInformation]
@@ -39,12 +52,39 @@ struct FlightStatusBoard: View {
     var shownFlights: [FlightInformation] {
       hidePast ? flights.filter { $0.localTime >= Date() } : flights
     }
+    @SceneStorage("FlightStatusCurrentTab") var selectedTab = 1
     
   var body: some View {
-      List(shownFlights, id: \.id) { flight in
-          NavigationLink(flight.statusBoardName, destination: FlightDetails(flight: flight))
+      TabView(selection: $selectedTab) {
+          FlightList(flights: shownFlights.filter { $0.direction == .arrival })
+              .tabItem {
+                  Image("descending-airplane")
+                        .resizable()
+                Text("Arrivals")
+              }
+              .tag(0)
           
-      }.navigationBarTitle("Flight Status")
+          FlightList(
+              flights: shownFlights
+            )
+            .tabItem {
+              Image(systemName: "airplane")
+                .resizable()
+              Text("All")
+            }
+            .tag(1)
+          
+            FlightList(
+              flights: shownFlights.filter { $0.direction == .departure }
+            )
+            .tabItem {
+              Image("ascending-airplane")
+              Text("Departures")
+            }
+            .tag(2)
+      }
+      .tabViewStyle(.page)
+          .navigationBarTitle("Flight Status")
       .navigationBarItems(
         trailing: Toggle("Hide Past", isOn: $hidePast)
       )

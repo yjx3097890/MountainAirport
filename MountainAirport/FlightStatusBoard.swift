@@ -83,7 +83,7 @@ struct FlightStatusBoard: View {
             }
             .tag(2)
       }
-      .tabViewStyle(.page)
+      .tabViewStyle(.automatic)
           .navigationBarTitle("Flight Status")
       .navigationBarItems(
         trailing: Toggle("Hide Past", isOn: $hidePast)

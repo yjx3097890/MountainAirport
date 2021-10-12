@@ -45,7 +45,6 @@ struct WelcomeView: View {
           .aspectRatio(contentMode: .fill)
           .frame(height: 250)
         VStack(alignment: .leading) {
-          
           if
             let id = lastFlightInfo.lastFlightId,
             let lastFlight = flightInfo.getFlightById(id) {
@@ -54,20 +53,28 @@ struct WelcomeView: View {
               isActive: $showNextFlight
             ) { }
           }
-          // 3
           NavigationLink(
-            // 4
-            destination: FlightStatusBoard(flights: flightInfo.getDaysFlights(Date()))
-
+            destination: FlightStatusBoard(
+              flights: flightInfo.getDaysFlights(Date()))
           ) {
-            // 5
             WelcomeButtonView(
               title: "Flight Status",
               subTitle: "Departure and arrival information"
             )
           }
-          
-          if let id = lastFlightInfo.lastFlightId, let lastFlight = flightInfo.getFlightById(id) {
+          NavigationLink(
+            destination: SearchFlights(
+              flightData: flightInfo.flights
+            )
+          ) {
+            WelcomeButtonView(
+              title: "Search Flights",
+              subTitle: "Search Upcoming Flights")
+          }
+          if
+            let id = lastFlightInfo.lastFlightId,
+            let lastFlight = flightInfo.getFlightById(id) {
+            // swiftlint:disable multiple_closures_with_trailing_closure
             Button(action: {
               showNextFlight = true
             }) {
@@ -76,17 +83,16 @@ struct WelcomeView: View {
                 subTitle: "Show Next Flight Departing or Arriving at Airport"
               )
             }
+            // swiftlint:enable multiple_closures_with_trailing_closure
           }
-          
           Spacer()
         }.font(.title)
         .foregroundColor(.white)
         .padding()
-      // 6
       }.navigationBarTitle("Mountain Airport")
       // End Navigation View
     }.navigationViewStyle(StackNavigationViewStyle())
-      .environmentObject(lastFlightInfo)
+    .environmentObject(lastFlightInfo)
   }
 }
 

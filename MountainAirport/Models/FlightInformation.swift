@@ -46,7 +46,7 @@ enum FlightStatus: String, CaseIterable {
   case departed = "Departed"
 }
 
-class FlightInformation: NSObject {
+class FlightInformation: NSObject, Identifiable {
   var id: Int
   var airline: String
   var number: String
@@ -59,6 +59,10 @@ class FlightInformation: NSObject {
   var status: FlightStatus
   var gate: String
   var history: [FlightHistory]
+
+  var isCheckInAvailable: Bool {
+    direction == .departure && flightStatus != "Departed"
+  }
 
   var localTime: Date {
     currentTime ?? scheduledTime
@@ -144,6 +148,22 @@ class FlightInformation: NSObject {
     let diff = Calendar.current.dateComponents([.minute], from: scheduledTime, to: actual)
     // swiftlint:disable:next force_unwrapping
     return diff.minute!
+  }
+
+  var statusColor: Color {
+    if status == .canceled {
+      return Color(red: 0.5, green: 0, blue: 0)
+    }
+
+    if timeDifference <= 0 {
+      return Color(red: 0.0, green: 0.6, blue: 0)
+    }
+
+    if timeDifference <= 15 {
+      return Color.yellow
+    }
+
+    return Color.red
   }
 
   var timelineColor: UIColor {

@@ -39,6 +39,8 @@ struct FlightSearchDetails: View {
     @State private var rebookAlert = false
     @State private var checkInFlight: CheckInInfo?
     @State private var isConfirming = false
+    @State private var showFlightHistory = false
+    
 
 
   var body: some View {
@@ -57,13 +59,11 @@ struct FlightSearchDetails: View {
               }
           }
           
-          // 1
           if flight.status == .canceled {
-            // 2
+            
             Button("Rebook Flight") {
               rebookAlert = true
             }
-            // 3
             .alert("Contact Your Airline", isPresented: $rebookAlert) {
                 Button("ok") {
                     
@@ -88,11 +88,8 @@ struct FlightSearchDetails: View {
                 isConfirming = true
 
             }
-            // 3
             .confirmationDialog("Check In", isPresented: $isConfirming, titleVisibility: .visible, presenting: checkInFlight) { flight in
-              // 4
-          
-            // 5
+            
                 Button("Reschedule", role: .destructive, action: {
                     print("Reschedule flight.")
                 })
@@ -111,7 +108,15 @@ struct FlightSearchDetails: View {
           }
       }
 
-
+          Button("On-Time History") {
+            showFlightHistory.toggle()
+          }
+          .popover(
+            isPresented: $showFlightHistory,
+            attachmentAnchor: .point(.center),
+            arrowEdge: .leading) {
+            FlightTimeHistory(flight: self.flight)
+          }
           
         FlightInfoPanel(flight: flight)
           .padding()

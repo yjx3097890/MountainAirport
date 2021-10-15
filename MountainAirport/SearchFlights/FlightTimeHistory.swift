@@ -32,72 +32,50 @@
 
 import SwiftUI
 
-struct AwardGrid: View {
-  var title: String
-  var awards: [AwardInformation]
+struct FlightTimeHistory: View {
+  var flight: FlightInformation
 
-  var body: some View {
-    Section(
-      header: Text(title)
-        .font(.title)
-        .foregroundColor(.white)
-    ) {
-      ForEach(awards, id: \.self) { award in
-        NavigationLink(destination: AwardDetails(award: award)) {
-          AwardCardView(award: award)
-            .foregroundColor(.black)
-            .aspectRatio(0.67, contentMode: .fit)
-        }
-      }
-    }
-  }
-}
-
-struct AwardsView: View {
-  @EnvironmentObject var flightNavigation: AppEnvironment
-  var awardArray: [AwardInformation] {
-    flightNavigation.awardList
+  var timeFormatter: RelativeDateTimeFormatter {
+    let rtf = RelativeDateTimeFormatter()
+    rtf.unitsStyle = .full
+    rtf.dateTimeStyle = .named
+    return rtf
   }
 
-  var activeAwards: [AwardInformation] {
-    awardArray.filter { $0.awarded }
-  }
-
-  var inactiveAwards: [AwardInformation] {
-    awardArray.filter { !$0.awarded }
-  }
-
-  var awardColumns: [GridItem] {
-    [GridItem(.adaptive(minimum: 150, maximum: 170))]
+  func relativeDate(_ date: Date) -> String {
+    return timeFormatter.localizedString(for: date, relativeTo: Date())
   }
 
   var body: some View {
-    ScrollView {
-      LazyVGrid(columns: awardColumns, pinnedViews: .sectionHeaders) {
-        AwardGrid(
-          title: "Awarded",
-          awards: activeAwards
-        )
-        AwardGrid(
-          title: "Not Awarded",
-          awards: inactiveAwards
-        )
-      }
-    }.padding()
-    .background(
+    ZStack {
       Image("background-view")
         .resizable()
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-    )
-    .navigationBarTitle("Your Awards")
+        .aspectRatio(contentMode: .fill)
+      VStack {
+        Text("On Time History for \(flight.statusBoardName)")
+          .font(.title2)
+          .padding(.top, 30)
+        ScrollView {
+          ForEach(flight.history, id: \.day) { history in
+            HStack {
+              Text("\(history.day) day(s) ago - \(history.flightDelayDescription)")
+                .padding()
+              Spacer()
+            }
+            .background(
+              Color.white.opacity(0.2)
+            )
+          }
+        }
+      }
+    }.foregroundColor(.white)
   }
 }
 
-struct AwardsView_Previews: PreviewProvider {
+struct FlightTimeHistory_Previews: PreviewProvider {
   static var previews: some View {
-    NavigationView {
-      AwardsView()
-    }.navigationViewStyle(StackNavigationViewStyle())
-    .environmentObject(AppEnvironment())
+    FlightTimeHistory(
+      flight: FlightData.generateTestFlight(date: Date())
+    )
   }
 }

@@ -1,15 +1,15 @@
-/// Copyright (c) 2020 Razeware LLC
-///
+/// Copyright (c) 2021 Razeware LLC
+/// 
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
 /// in the Software without restriction, including without limitation the rights
 /// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 /// copies of the Software, and to permit persons to whom the Software is
 /// furnished to do so, subject to the following conditions:
-///
+/// 
 /// The above copyright notice and this permission notice shall be included in
 /// all copies or substantial portions of the Software.
-///
+/// 
 /// Notwithstanding the foregoing, you may not use, copy, modify, merge, publish,
 /// distribute, sublicense, create a derivative work, and/or sell copies of the
 /// Software in any work that is designed, intended, or marketed for pedagogical or
@@ -17,7 +17,7 @@
 /// or information technology.  Permission for such use, copying, modification,
 /// merger, publication, distribution, sublicensing, creation of derivative works,
 /// or sale is expressly withheld.
-///
+/// 
 /// This project and source code may use libraries or frameworks that are
 /// released under various Open-Source licenses. Use of those libraries and
 /// frameworks are governed by their own individual licenses.
@@ -30,74 +30,37 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 /// THE SOFTWARE.
 
-import SwiftUI
+import Foundation
 
-struct AwardGrid: View {
-  var title: String
-  var awards: [AwardInformation]
+struct RGB {
+  var red = 0.5
+  var green = 0.5
+  var blue = 0.5
 
-  var body: some View {
-    Section(
-      header: Text(title)
-        .font(.title)
-        .foregroundColor(.white)
-    ) {
-      ForEach(awards, id: \.self) { award in
-        NavigationLink(destination: AwardDetails(award: award)) {
-          AwardCardView(award: award)
-            .foregroundColor(.black)
-            .aspectRatio(0.67, contentMode: .fit)
-        }
-      }
-    }
-  }
-}
-
-struct AwardsView: View {
-  @EnvironmentObject var flightNavigation: AppEnvironment
-  var awardArray: [AwardInformation] {
-    flightNavigation.awardList
+  /// Create an RGB object with random values.
+  static func random() -> RGB {
+    var rgb = RGB()
+    rgb.red = Double.random(in: 0..<1)
+    rgb.green = Double.random(in: 0..<1)
+    rgb.blue = Double.random(in: 0..<1)
+    return rgb
   }
 
-  var activeAwards: [AwardInformation] {
-    awardArray.filter { $0.awarded }
+  /// Compute the normalized 3-dimensional distance to another RGB object.
+  ///   - parameters:
+  ///     - target: The other RGB object.
+  func difference(target: RGB) -> Double {
+    let rDiff = red - target.red
+    let gDiff = green - target.green
+    let bDiff = blue - target.blue
+    return sqrt(
+      (rDiff * rDiff + gDiff * gDiff + bDiff * bDiff) / 3.0)
   }
 
-  var inactiveAwards: [AwardInformation] {
-    awardArray.filter { !$0.awarded }
-  }
-
-  var awardColumns: [GridItem] {
-    [GridItem(.adaptive(minimum: 150, maximum: 170))]
-  }
-
-  var body: some View {
-    ScrollView {
-      LazyVGrid(columns: awardColumns, pinnedViews: .sectionHeaders) {
-        AwardGrid(
-          title: "Awarded",
-          awards: activeAwards
-        )
-        AwardGrid(
-          title: "Not Awarded",
-          awards: inactiveAwards
-        )
-      }
-    }.padding()
-    .background(
-      Image("background-view")
-        .resizable()
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-    )
-    .navigationBarTitle("Your Awards")
-  }
-}
-
-struct AwardsView_Previews: PreviewProvider {
-  static var previews: some View {
-    NavigationView {
-      AwardsView()
-    }.navigationViewStyle(StackNavigationViewStyle())
-    .environmentObject(AppEnvironment())
+  /// A String representing the integer values of an RGB instance.
+  var intString: String {
+    "R \(Int(red * 255.0))"
+      + "  G \(Int(green * 255.0))"
+      + "  B \(Int(blue * 255.0))"
   }
 }

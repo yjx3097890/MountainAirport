@@ -35,7 +35,7 @@ import SwiftUI
 struct WelcomeView: View {
   @StateObject var flightInfo = FlightData()
   @State var showNextFlight = false
-  @StateObject var lastFlightInfo = FlightNavigationInfo()
+  @StateObject var appEnvironment = AppEnvironment()
 
   var body: some View {
     NavigationView {
@@ -44,55 +44,40 @@ struct WelcomeView: View {
           .resizable()
           .aspectRatio(contentMode: .fill)
           .frame(height: 250)
-        VStack(alignment: .leading) {
-          if
-            let id = lastFlightInfo.lastFlightId,
-            let lastFlight = flightInfo.getFlightById(id) {
-            NavigationLink(
-              destination: FlightDetails(flight: lastFlight),
-              isActive: $showNextFlight
-            ) { }
-          }
+        if
+          let id = appEnvironment.lastFlightId,
+          let lastFlight = flightInfo.getFlightById(id) {
           NavigationLink(
-            destination: FlightStatusBoard(
-              flights: flightInfo.getDaysFlights(Date()))
+            destination: FlightDetails(flight: lastFlight),
+            isActive: $showNextFlight
+          ) { }
+        }
+        ScrollView {
+          LazyVGrid(
+            // 2
+            columns: [
+              // 3
+              GridItem(.fixed(160)),
+              GridItem(.fixed(160))
+              // 4
+            ], spacing: 15
           ) {
-            WelcomeButtonView(
-              title: "Flight Status",
-              subTitle: "Departure and arrival information"
+            FlightStatusButton(flightInfo: flightInfo)
+            SearchFlightsButton(flightInfo: flightInfo)
+            AwardsButton()
+            LastViewedButton(
+              flightInfo: flightInfo,
+              appEnvironment: appEnvironment,
+              showNextFlight: $showNextFlight
             )
-          }
-          NavigationLink(
-            destination: SearchFlights(
-              flightData: flightInfo.flights
-            )
-          ) {
-            WelcomeButtonView(
-              title: "Search Flights",
-              subTitle: "Search Upcoming Flights")
-          }
-          if
-            let id = lastFlightInfo.lastFlightId,
-            let lastFlight = flightInfo.getFlightById(id) {
-            // swiftlint:disable multiple_closures_with_trailing_closure
-            Button(action: {
-              showNextFlight = true
-            }) {
-              WelcomeButtonView(
-                title: "Last Flight \(lastFlight.flightName)",
-                subTitle: "Show Next Flight Departing or Arriving at Airport"
-              )
-            }
-            // swiftlint:enable multiple_closures_with_trailing_closure
-          }
-          Spacer()
-        }.font(.title)
-        .foregroundColor(.white)
-        .padding()
+          }.font(.title)
+          .foregroundColor(.white)
+          .padding()
+        }
       }.navigationBarTitle("Mountain Airport")
       // End Navigation View
     }.navigationViewStyle(StackNavigationViewStyle())
-    .environmentObject(lastFlightInfo)
+    .environmentObject(appEnvironment)
   }
 }
 

@@ -18,10 +18,6 @@
 /// merger, publication, distribution, sublicensing, creation of derivative works,
 /// or sale is expressly withheld.
 ///
-/// This project and source code may use libraries or frameworks that are
-/// released under various Open-Source licenses. Use of those libraries and
-/// frameworks are governed by their own individual licenses.
-///
 /// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 /// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 /// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -32,58 +28,36 @@
 
 import SwiftUI
 
-struct FlightStatusBoard: View {
-  var flights: [FlightInformation]
-  @State private var hidePast = false
-  @AppStorage("FlightStatusCurrentTab") var selectedTab = 1
-
-  var shownFlights: [FlightInformation] {
-    hidePast ?
-      flights.filter { $0.localTime >= Date() } :
-      flights
-  }
+struct LastViewedButton: View {
+  @ObservedObject var flightInfo: FlightData
+  @ObservedObject var appEnvironment: AppEnvironment
+  @Binding var showNextFlight: Bool
 
   var body: some View {
-    TabView(selection: $selectedTab) {
-      FlightList(
-        flights: shownFlights.filter { $0.direction == .arrival }
-      ).tabItem {
-        Image("descending-airplane")
-          .resizable()
-        Text("Arrivals")
+    if
+      let id = appEnvironment.lastFlightId,
+      let lastFlight = flightInfo.getFlightById(id) {
+      // swiftlint:disable multiple_closures_with_trailing_closure
+      Button(action: {
+        showNextFlight = true
+      }) {
+        WelcomeButtonView(
+          title: "Last Viewed Flight",
+          subTitle: lastFlight.flightName,
+          imageName: "suit.heart.fill"
+        )
       }
-      .tag(0)
-      FlightList(
-        flights: shownFlights
-      ).tabItem {
-        Image(systemName: "airplane")
-          .resizable()
-        Text("All")
-      }
-      .tag(1)
-      FlightList(
-        flights: shownFlights.filter { $0.direction == .departure }
-      ).tabItem {
-        Image("ascending-airplane")
-        Text("Departures")
-      }
-      .tag(2)
-    }.navigationTitle("Flight Status")
-    .navigationBarItems(
-      trailing: Toggle(
-        "Hide Past",
-        isOn: $hidePast
-      )
-    )
+      // swiftlint:enable multiple_closures_with_trailing_closure
+    } else {
+      Spacer()
+    }
   }
 }
 
-struct FlightStatusBoard_Previews: PreviewProvider {
+struct LastViewedButton_Previews: PreviewProvider {
   static var previews: some View {
-    NavigationView {
-      FlightStatusBoard(
-        flights: FlightData.generateTestFlights(date: Date())
-      )
-    }
+    let environment = AppEnvironment()
+    environment.lastFlightId = 1
+    return LastViewedButton(flightInfo: FlightData(), appEnvironment: environment, showNextFlight: .constant(false))
   }
 }

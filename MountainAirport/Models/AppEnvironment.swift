@@ -32,58 +32,65 @@
 
 import SwiftUI
 
-struct FlightStatusBoard: View {
-  var flights: [FlightInformation]
-  @State private var hidePast = false
-  @AppStorage("FlightStatusCurrentTab") var selectedTab = 1
+class AppEnvironment: ObservableObject {
+  @Published var lastFlightId: Int?
+  @Published var awardList: [AwardInformation] = []
 
-  var shownFlights: [FlightInformation] {
-    hidePast ?
-      flights.filter { $0.localTime >= Date() } :
-      flights
-  }
-
-  var body: some View {
-    TabView(selection: $selectedTab) {
-      FlightList(
-        flights: shownFlights.filter { $0.direction == .arrival }
-      ).tabItem {
-        Image("descending-airplane")
-          .resizable()
-        Text("Arrivals")
-      }
-      .tag(0)
-      FlightList(
-        flights: shownFlights
-      ).tabItem {
-        Image(systemName: "airplane")
-          .resizable()
-        Text("All")
-      }
-      .tag(1)
-      FlightList(
-        flights: shownFlights.filter { $0.direction == .departure }
-      ).tabItem {
-        Image("ascending-airplane")
-        Text("Departures")
-      }
-      .tag(2)
-    }.navigationTitle("Flight Status")
-    .navigationBarItems(
-      trailing: Toggle(
-        "Hide Past",
-        isOn: $hidePast
+  init() {
+    awardList.append(
+      AwardInformation(
+        imageName: "first-visit-award",
+        title: "First Visit",
+        description: "Awarded the first time you open the app while at the airport.",
+        awarded: true
       )
     )
-  }
-}
-
-struct FlightStatusBoard_Previews: PreviewProvider {
-  static var previews: some View {
-    NavigationView {
-      FlightStatusBoard(
-        flights: FlightData.generateTestFlights(date: Date())
+    awardList.append(
+      AwardInformation(
+        imageName: "overnight-award",
+        title: "Left Car Overnight",
+        description: "You left you car parked overnight in one of our parking lots.",
+        awarded: true
       )
-    }
-  }
-}
+    )
+    awardList.append(
+      AwardInformation(
+        imageName: "meal-award",
+        title: "Meal at Airport",
+        description: "You used the app to receive a discount at one of our restaurants.",
+        awarded: false
+      )
+    )
+    awardList.append(
+      AwardInformation(
+        imageName: "first-flight-award",
+        title: "First Flight",
+        description: "You checked in for a flight using the app for the first time.",
+        awarded: true
+      )
+    )
+    awardList.append(
+      AwardInformation(
+        imageName: "shopping-award",
+        title: "Almost Duty Free",
+        description: "You used the app to receive a discount at one of our vendors.",
+        awarded: true
+      )
+    )
+    awardList.append(
+      AwardInformation(
+        imageName: "rainy-day-award",
+        title: "Rainy Day",
+        description: "You flight was delayed because of weather.",
+        awarded: false
+      )
+    )
+    awardList.append(
+      AwardInformation(
+        imageName: "return-home-award",
+        title: "Welcome Home",
+        description: "Your returned to the airport after leaving from it.",
+        awarded: true
+      )
+    )
+  }}

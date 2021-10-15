@@ -32,58 +32,52 @@
 
 import SwiftUI
 
-struct FlightStatusBoard: View {
-  var flights: [FlightInformation]
-  @State private var hidePast = false
-  @AppStorage("FlightStatusCurrentTab") var selectedTab = 1
+struct AwardDetails: View {
+  var award: AwardInformation
 
-  var shownFlights: [FlightInformation] {
-    hidePast ?
-      flights.filter { $0.localTime >= Date() } :
-      flights
+  func imageSize(proxy: GeometryProxy) -> CGFloat {
+    let size = min(proxy.size.width, proxy.size.height)
+    return size * 0.8
   }
 
   var body: some View {
-    TabView(selection: $selectedTab) {
-      FlightList(
-        flights: shownFlights.filter { $0.direction == .arrival }
-      ).tabItem {
-        Image("descending-airplane")
-          .resizable()
-        Text("Arrivals")
-      }
-      .tag(0)
-      FlightList(
-        flights: shownFlights
-      ).tabItem {
-        Image(systemName: "airplane")
-          .resizable()
-        Text("All")
-      }
-      .tag(1)
-      FlightList(
-        flights: shownFlights.filter { $0.direction == .departure }
-      ).tabItem {
-        Image("ascending-airplane")
-        Text("Departures")
-      }
-      .tag(2)
-    }.navigationTitle("Flight Status")
-    .navigationBarItems(
-      trailing: Toggle(
-        "Hide Past",
-        isOn: $hidePast
-      )
-    )
+    VStack(alignment: .center) {
+      Image(award.imageName)
+        .resizable()
+        .aspectRatio(contentMode: .fit)
+        .padding()
+      Text(award.title)
+        .font(.title)
+        .padding()
+      Text(award.description)
+        .font(.body)
+        .padding()
+      Spacer()
+    }.padding()
+    .opacity(award.awarded ? 1.0 : 0.4)
+    .saturation(award.awarded ? 1 : 0)
   }
 }
 
-struct FlightStatusBoard_Previews: PreviewProvider {
+struct AwardDetails_Previews: PreviewProvider {
   static var previews: some View {
-    NavigationView {
-      FlightStatusBoard(
-        flights: FlightData.generateTestFlights(date: Date())
-      )
+    let award = AwardInformation(
+      imageName: "first-visit-award",
+      title: "First Visit",
+      description: "Awarded the first time you open the app while at the airport.",
+      awarded: true
+    )
+
+    let award2 = AwardInformation(
+      imageName: "rainy-day-award",
+      title: "Rainy Day",
+      description: "Your flight was delayed because of weather.",
+      awarded: false
+    )
+
+    Group {
+      AwardDetails(award: award)
+      AwardDetails(award: award2)
     }
   }
 }

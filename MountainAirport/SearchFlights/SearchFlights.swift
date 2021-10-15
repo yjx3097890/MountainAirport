@@ -18,6 +18,10 @@
 /// merger, publication, distribution, sublicensing, creation of derivative works,
 /// or sale is expressly withheld.
 ///
+/// This project and source code may use libraries or frameworks that are
+/// released under various Open-Source licenses. Use of those libraries and
+/// frameworks are governed by their own individual licenses.
+///
 /// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 /// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 /// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -48,19 +52,19 @@ struct SearchFlights: View {
 
     return matchingFlights
   }
-    
-    var flightDates: [Date] {
-      let allDates = matchingFlights.map { $0.localTime.dateOnly }
-      let uniqueDates = Array(Set(allDates)) // 去重
-      return uniqueDates.sorted()
+
+  var flightDates: [Date] {
+    let allDates = matchingFlights.map { $0.localTime.dateOnly }
+    let uniqueDates = Array(Set(allDates))
+    return uniqueDates.sorted()
+  }
+
+  func flightsForDay(date: Date) -> [FlightInformation] {
+    matchingFlights.filter {
+      Calendar.current.isDate($0.localTime, inSameDayAs: date)
     }
-    
-    func flightsForDay(date: Date) -> [FlightInformation] {
-      matchingFlights.filter {
-        Calendar.current.isDate($0.localTime, inSameDayAs: date)
-      }
-    }
-    
+  }
+
   var body: some View {
     ZStack {
       Image("background-view")
@@ -78,23 +82,22 @@ struct SearchFlights: View {
         .pickerStyle(SegmentedPickerStyle())
         TextField(" Search cities", text: $city)
           .textFieldStyle(RoundedBorderTextFieldStyle())
-        
-          List{
-              ForEach(flightDates, id: \.hashValue) { date in
-                  Section(header: Text(longDateFormatter.string(from: date)),
-                          footer: HStack {
-                      Spacer()
-                      Text("Matching flights " +
-                                      "\(flightsForDay(date: date).count)")
-                  }) {
-                      ForEach(flightsForDay(date: date)) { flight in
-                              SearchResultRow(flight: flight)
-                            }
-                  }
-                  
+        List {
+          ForEach(flightDates, id: \.hashValue) { date in
+            Section(
+              header: Text(longDateFormatter.string(from: date)),
+              footer:
+                HStack {
+                  Spacer()
+                  Text("Matching flights \(flightsForDay(date: date).count)")
+                }
+            ) {
+              ForEach(flightsForDay(date: date)) { flight in
+                SearchResultRow(flight: flight)
               }
-              
-          }.listStyle(.insetGrouped)
+            }
+          }
+        }.listStyle(InsetGroupedListStyle())
         Spacer()
       }.navigationBarTitle("Search Flights")
       .padding()
@@ -105,7 +108,8 @@ struct SearchFlights: View {
 struct SearchFlights_Previews: PreviewProvider {
   static var previews: some View {
     NavigationView {
-      SearchFlights(flightData: FlightData.generateTestFlights(date: Date()))
+      SearchFlights(flightData: FlightData.generateTestFlights(date: Date())
+      )
     }
   }
 }

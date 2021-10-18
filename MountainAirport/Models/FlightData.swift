@@ -1,15 +1,15 @@
 /// Copyright (c) 2020 Razeware LLC
-///
+/// 
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
 /// in the Software without restriction, including without limitation the rights
 /// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 /// copies of the Software, and to permit persons to whom the Software is
 /// furnished to do so, subject to the following conditions:
-///
+/// 
 /// The above copyright notice and this permission notice shall be included in
 /// all copies or substantial portions of the Software.
-///
+/// 
 /// Notwithstanding the foregoing, you may not use, copy, modify, merge, publish,
 /// distribute, sublicense, create a derivative work, and/or sell copies of the
 /// Software in any work that is designed, intended, or marketed for pedagogical or
@@ -73,6 +73,8 @@ class FlightData: ObservableObject {
 
   init() {
     flights = generateSchedule()
+    let historyFlight = flights[0]
+    flights[0] = FlightData.generateTestHistory(flight: historyFlight)
   }
 
   func getFlightById(_ id: Int) -> FlightInformation? {
@@ -235,5 +237,31 @@ class FlightData: ObservableObject {
   static func generateTestFlights(date: Date) -> [FlightInformation] {
     let flightData = FlightData()
     return flightData.flights
+  }
+
+  static func generateTestFlightHistory(date: Date) -> FlightInformation {
+    let flightData = FlightData()
+    let flight = flightData.flights[0]
+    return generateTestHistory(flight: flight)
+  }
+
+  static func generateTestHistory(flight: FlightInformation) -> FlightInformation {
+    let range = 60 + 15
+    for hst in flight.history {
+      let difference = (hst.day - 1) * (range / flight.history.count) - 14
+      if hst.day == 10 {
+        hst.actualTime = nil
+        hst.status = .canceled
+      } else {
+        // swiftlint:disable:next force_unwrapping
+        hst.actualTime = Calendar.current.date(byAdding: .minute, value: difference, to: hst.scheduledTime)!
+        if difference <= 0 {
+          hst.status = .ontime
+        } else {
+          hst.status = .delayed
+        }
+      }
+    }
+    return flight
   }
 }

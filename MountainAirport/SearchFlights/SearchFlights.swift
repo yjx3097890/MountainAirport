@@ -99,9 +99,10 @@ struct SearchFlights: View {
           }
         }.listStyle(InsetGroupedListStyle())
         Spacer()
-      }.navigationBarTitle("Search Flights")
+      }.navigationTitle("Search Flights")
       .padding()
-    }
+    } 
+
   }
 }
 

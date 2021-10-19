@@ -101,8 +101,7 @@ struct SearchFlights: View {
         Spacer()
       }.navigationTitle("Search Flights")
       .padding()
-    } 
-
+    }
   }
 }
 

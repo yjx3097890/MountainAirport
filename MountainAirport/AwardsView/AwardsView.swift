@@ -32,29 +32,9 @@
 
 import SwiftUI
 
-struct AwardGrid: View {
-  var title: String
-  var awards: [AwardInformation]
-
-  var body: some View {
-    Section(
-      header: Text(title)
-        .font(.title)
-        .foregroundColor(.white)
-    ) {
-      ForEach(awards, id: \.self) { award in
-        NavigationLink(destination: AwardDetails(award: award)) {
-          AwardCardView(award: award)
-            .foregroundColor(.black)
-            .aspectRatio(0.67, contentMode: .fit)
-        }
-      }
-    }
-  }
-}
-
 struct AwardsView: View {
   @EnvironmentObject var flightNavigation: AppEnvironment
+
   var awardArray: [AwardInformation] {
     flightNavigation.awardList
   }

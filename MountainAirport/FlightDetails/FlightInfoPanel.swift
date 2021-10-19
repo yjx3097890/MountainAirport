@@ -1,15 +1,15 @@
 /// Copyright (c) 2020 Razeware LLC
-/// 
+///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
 /// in the Software without restriction, including without limitation the rights
 /// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 /// copies of the Software, and to permit persons to whom the Software is
 /// furnished to do so, subject to the following conditions:
-/// 
+///
 /// The above copyright notice and this permission notice shall be included in
 /// all copies or substantial portions of the Software.
-/// 
+///
 /// Notwithstanding the foregoing, you may not use, copy, modify, merge, publish,
 /// distribute, sublicense, create a derivative work, and/or sell copies of the
 /// Software in any work that is designed, intended, or marketed for pedagogical or
@@ -34,6 +34,7 @@ import SwiftUI
 
 struct FlightInfoPanel: View {
   var flight: FlightInformation
+  @State private var showTerminal = false
 
   var timeFormatter: DateFormatter {
     let tdf = DateFormatter()
@@ -58,17 +59,41 @@ struct FlightInfoPanel: View {
           Text("Flying to \(flight.otherAirport)")
         }
         Text(flight.flightStatus) + Text(" (\(timeFormatter.string(from: flight.localTime)))")
-        if flight.gate.hasPrefix("A") {
-          Image("terminal-a-map")
-            .resizable()
-            .frame(maxWidth: .infinity)
-            .aspectRatio(contentMode: .fit)
-        } else {
-          Image("terminal-b-map")
-            .resizable()
-            .frame(maxWidth: .infinity)
-            .aspectRatio(contentMode: .fit)
+       
+        Button(action: {
+          showTerminal.toggle()
+        }, label: {
+          HStack(alignment: .center) {
+              
+              Image(systemName: "airplane.circle")
+                .resizable()
+                .frame(width: 30, height: 30)
+                .padding( 10)
+                .rotationEffect(.degrees(showTerminal ? 90 : 270))
+                .animation(Animation.default.speed(0.33), value: showTerminal)
+              Spacer()
+
+    
+            Text(
+              showTerminal ?
+                "Hide Terminal Map" :
+                "Show Terminal Map"
+            )
+            Spacer()
+              
+            Image(systemName: "airplane.circle")
+              .resizable()
+              .frame(width: 30, height: 30)
+              .padding(10)
+              .rotationEffect(.degrees(showTerminal ? 90 : 270))
+              .animation(.linear(duration: 2.0), value: showTerminal)
+              
+          }
+        })
+        if showTerminal {
+          FlightTerminalMap(flight: flight)
         }
+        Spacer()
       }
     }
   }

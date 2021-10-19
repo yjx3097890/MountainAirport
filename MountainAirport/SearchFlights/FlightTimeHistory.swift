@@ -128,6 +128,12 @@ struct FlightTimeHistory: View {
             )
           }
         }
+          HistoryPieChart(flightHistory: flight.history)
+            .frame(width: 250, height: 250)
+            .padding(5)
+            .font(.footnote)
+
+          
       }
         Spacer()
     }

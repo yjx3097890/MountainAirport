@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0929895F271E6945004B05AD /* HistoryPieChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0929895E271E6945004B05AD /* HistoryPieChart.swift */; };
 		18D775C522AD944300AE281E /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18D775C422AD944300AE281E /* WelcomeView.swift */; };
 		18D775C722AD944400AE281E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 18D775C622AD944400AE281E /* Assets.xcassets */; };
 		18D775CA22AD944400AE281E /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 18D775C922AD944400AE281E /* Preview Assets.xcassets */; };
@@ -45,6 +46,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0929895E271E6945004B05AD /* HistoryPieChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryPieChart.swift; sourceTree = "<group>"; };
 		18D775BD22AD944300AE281E /* MountainAirport.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MountainAirport.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		18D775C422AD944300AE281E /* WelcomeView.swift */ = {isa = PBXFileReference; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; tabWidth = 2; };
 		18D775C622AD944400AE281E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -193,6 +195,7 @@
 				A9CB5E0C2539FA6F004253E8 /* FlightSearchDetails.swift */,
 				A9CB5E132539FCDE004253E8 /* FlightSearchSummary.swift */,
 				A9CB5E1C253A587F004253E8 /* FlightTimeHistory.swift */,
+				0929895E271E6945004B05AD /* HistoryPieChart.swift */,
 			);
 			path = SearchFlights;
 			sourceTree = "<group>";
@@ -310,6 +313,7 @@
 				A93AD0F6253364B400182D1B /* AwardDetails.swift in Sources */,
 				A9AB45A6252E697800DC8653 /* AwardsView.swift in Sources */,
 				A952E0A1254C891C004687A2 /* LastViewedButton.swift in Sources */,
+				0929895F271E6945004B05AD /* HistoryPieChart.swift in Sources */,
 				A9D22597252403B50042062B /* SearchFlights.swift in Sources */,
 				A9CB5E142539FCDE004253E8 /* FlightSearchSummary.swift in Sources */,
 				A92CC5E4250E7AEA0010BF40 /* FlightDetails.swift in Sources */,

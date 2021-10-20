@@ -34,7 +34,8 @@ import SwiftUI
 
 struct AwardsView: View {
   @EnvironmentObject var flightNavigation: AppEnvironment
-
+  @State var selectedAward: AwardInformation?
+    @Namespace var cardNamespace : Namespace.ID
   var awardArray: [AwardInformation] {
     flightNavigation.awardList
   }
@@ -52,24 +53,45 @@ struct AwardsView: View {
   }
 
   var body: some View {
-    ScrollView {
-      LazyVGrid(columns: awardColumns, pinnedViews: .sectionHeaders) {
-        AwardGrid(
-          title: "Awarded",
-          awards: activeAwards
-        )
-        AwardGrid(
-          title: "Not Awarded",
-          awards: inactiveAwards
-        )
+      ZStack {
+        // 1
+        if let award = selectedAward {
+          // 2
+          AwardDetails(award: award)
+            .background(Color.white)
+            .shadow(radius: 5.0)
+            .clipShape(RoundedRectangle(cornerRadius: 20.0))
+            // 3
+            .onTapGesture {
+                withAnimation {
+                    selectedAward = nil
+                }
+            }
+            .transition(.scale)
+            .matchedGeometryEffect(
+              id: award.hashValue,
+              in: cardNamespace,
+              anchor: .center
+            )
+        } else {
+          ScrollView {
+            LazyVGrid(columns: awardColumns) {
+                AwardGrid(
+                  title: "Awarded",
+                  awards: activeAwards,
+                  selected: $selectedAward,
+                  namespace: cardNamespace
+                )
+                AwardGrid(
+                  title: "Not Awarded",
+                  awards: inactiveAwards,
+                  selected: $selectedAward,
+                  namespace: cardNamespace
+                )
+            }
+          }
+        }
       }
-    }.padding()
-    .background(
-      Image("background-view")
-        .resizable()
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-    )
-    .navigationTitle("Your Awards")
   }
 }
 

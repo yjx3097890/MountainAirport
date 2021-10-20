@@ -32,6 +32,18 @@
 
 import SwiftUI
 
+extension AnyTransition {
+    static var buttonNameTransition: AnyTransition {
+        let insertion = AnyTransition.move(edge: .trailing)
+          .combined(with: .opacity)
+        let removal = AnyTransition.scale(scale: 0.0)
+          .combined(with: .opacity)
+        return .asymmetric(insertion: insertion, removal: removal)
+      }
+
+    
+}
+
 struct FlightInfoPanel: View {
   var flight: FlightInformation
   @State private var showTerminal = false
@@ -89,7 +101,7 @@ struct FlightInfoPanel: View {
                 } else {
                   Text("Show Terminal Map")
                 }
-              }.transition(.slide)
+              }.transition(.buttonNameTransition)
 
               
             Spacer()

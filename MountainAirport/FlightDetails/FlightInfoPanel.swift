@@ -33,15 +33,13 @@
 import SwiftUI
 
 extension AnyTransition {
-    static var buttonNameTransition: AnyTransition {
-        let insertion = AnyTransition.move(edge: .trailing)
-          .combined(with: .opacity)
-        let removal = AnyTransition.scale(scale: 0.0)
-          .combined(with: .opacity)
-        return .asymmetric(insertion: insertion, removal: removal)
-      }
-
-    
+  static var buttonNameTransition: AnyTransition {
+    let insertion = AnyTransition.move(edge: .trailing)
+      .combined(with: .opacity)
+    let removal = AnyTransition.scale(scale: 0.0)
+      .combined(with: .opacity)
+    return .asymmetric(insertion: insertion, removal: removal)
+  }
 }
 
 struct FlightInfoPanel: View {
@@ -71,54 +69,46 @@ struct FlightInfoPanel: View {
           Text("Flying to \(flight.otherAirport)")
         }
         Text(flight.flightStatus) + Text(" (\(timeFormatter.string(from: flight.localTime)))")
-       
         Button(action: {
-            withAnimation {
-
-          showTerminal.toggle()
-            }
+          withAnimation {
+            showTerminal.toggle()
+          }
         }, label: {
           HStack(alignment: .center) {
-              
-              Image(systemName: "airplane.circle")
-                .resizable()
-                .frame(width: 30, height: 30)
-                .padding(10)
-                .rotationEffect(.degrees(showTerminal ? 90 : 270))
-                .animation(
-                  .spring(
-                    response: 0.55,
-                    dampingFraction: 0.45,
-                    blendDuration: 0
-                  ),
-                value: showTerminal)
-              Spacer()
-
-    
-              Group {
-                if showTerminal {
-                  Text("Hide Terminal Map")
-                } else {
-                  Text("Show Terminal Map")
-                }
-              }.transition(.buttonNameTransition)
-
-              
+            Image(systemName: "airplane.circle")
+              .resizable()
+              .frame(width: 30, height: 30)
+              .padding(.trailing, 10)
+              .rotationEffect(.degrees(showTerminal ? 90 : 270))
+              .animation(
+                .spring(
+                  response: 0.55,
+                  dampingFraction: 0.45,
+                  blendDuration: 0
+                )
+              )
             Spacer()
-              
-              Image(systemName: "airplane.circle")
-                .resizable()
-                .frame(width: 30, height: 30)
-                .padding( 10)
-                .rotationEffect(.degrees(showTerminal ? 90 : 270))
-                .animation(
-                  .spring(
-                    response: 0.55,
-                    dampingFraction: 0.45,
-                    blendDuration: 0
-                  ),
-                value: showTerminal)
-              
+            Group {
+              if showTerminal {
+                Text("Hide Terminal Map")
+              } else {
+                Text("Show Terminal Map")
+              }
+            }
+            .transition(.buttonNameTransition)
+            Spacer()
+            Image(systemName: "airplane.circle")
+              .resizable()
+              .frame(width: 30, height: 30)
+              .padding(.trailing, 10)
+              .rotationEffect(.degrees(showTerminal ? 90 : 270))
+              .animation(
+                .spring(
+                  response: 0.55,
+                  dampingFraction: 0.45,
+                  blendDuration: 0
+                )
+              )
           }
         })
         if showTerminal {

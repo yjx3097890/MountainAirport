@@ -18,10 +18,6 @@
 /// merger, publication, distribution, sublicensing, creation of derivative works,
 /// or sale is expressly withheld.
 ///
-/// This project and source code may use libraries or frameworks that are
-/// released under various Open-Source licenses. Use of those libraries and
-/// frameworks are governed by their own individual licenses.
-///
 /// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 /// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 /// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -32,37 +28,42 @@
 
 import SwiftUI
 
-struct FlightTimeHistory: View {
-  var flight: FlightInformation
-
+struct TimelineView: View {
+  var flights: [FlightInformation]
 
   var body: some View {
     ZStack {
       Image("background-view")
         .resizable()
-        .aspectRatio(contentMode: .fill)
-      VStack {
-        Text("On Time History for \(flight.statusBoardName)")
-          .font(.title2)
-          .padding(.top, 30)
-        ScrollView {
-          DelayBarChart(
-            flight: FlightData.generateTestFlight(date: Date())
-          )
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+      ScrollView {
+        VStack {
+          ForEach(flights) { flight in
+            FlightCardView(flight: flight)
+          }
         }
-        HistoryPieChart(flightHistory: flight.history)
-          .font(.footnote)
-          .frame(width: 250, height: 250)
-          .padding(5)
       }
-    }.foregroundColor(.white)
+      .padding()
+    }
+    .foregroundColor(.white)
+    .navigationTitle("Flight Timeline")
   }
 }
 
-struct FlightTimeHistory_Previews: PreviewProvider {
+struct TimelineView_Previews: PreviewProvider {
   static var previews: some View {
-    FlightTimeHistory(
-      flight: FlightData.generateTestFlight(date: Date())
-    )
+    NavigationView {
+      TimelineView(
+        flights: FlightData.generateTestFlights(
+          date: Date()
+        )
+        .filter {
+          Calendar.current.isDate(
+            $0.localTime,
+            inSameDayAs: Date()
+          )
+        }
+      )
+    }
   }
 }

@@ -35,7 +35,8 @@ import SwiftUI
 struct AwardsView: View {
   @EnvironmentObject var flightNavigation: AppEnvironment
   @State var selectedAward: AwardInformation?
-    @Namespace var cardNamespace : Namespace.ID
+  @Namespace var cardNamespace
+
   var awardArray: [AwardInformation] {
     flightNavigation.awardList
   }
@@ -53,45 +54,44 @@ struct AwardsView: View {
   }
 
   var body: some View {
-      ZStack {
-        // 1
-        if let award = selectedAward {
-          // 2
-          AwardDetails(award: award)
-            .background(Color.white)
-            .shadow(radius: 5.0)
-            .clipShape(RoundedRectangle(cornerRadius: 20.0))
-            // 3
-            .onTapGesture {
-                withAnimation {
-                    selectedAward = nil
-                }
+    ZStack {
+      // 1
+      if let award = selectedAward {
+        // 2
+        AwardDetails(award: award)
+          .background(Color.white)
+          .shadow(radius: 5.0)
+          .clipShape(RoundedRectangle(cornerRadius: 20.0))
+          // 3
+          .onTapGesture {
+            withAnimation {
+              selectedAward = nil
             }
-            .transition(.scale)
-            .matchedGeometryEffect(
-              id: award.hashValue,
-              in: cardNamespace,
-              anchor: .center
+          }
+          .matchedGeometryEffect(
+            id: award.hashValue,
+            in: cardNamespace,
+            anchor: .topLeading
+          )
+      } else {
+        ScrollView {
+          LazyVGrid(columns: awardColumns) {
+            AwardGrid(
+              title: "Awarded",
+              awards: activeAwards,
+              selected: $selectedAward,
+              namespace: cardNamespace
             )
-        } else {
-          ScrollView {
-            LazyVGrid(columns: awardColumns) {
-                AwardGrid(
-                  title: "Awarded",
-                  awards: activeAwards,
-                  selected: $selectedAward,
-                  namespace: cardNamespace
-                )
-                AwardGrid(
-                  title: "Not Awarded",
-                  awards: inactiveAwards,
-                  selected: $selectedAward,
-                  namespace: cardNamespace
-                )
-            }
+            AwardGrid(
+              title: "Not Awarded",
+              awards: inactiveAwards,
+              selected: $selectedAward,
+              namespace: cardNamespace
+            )
           }
         }
       }
+    }
   }
 }
 

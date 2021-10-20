@@ -77,6 +77,18 @@ struct WelcomeView: View {
             ) {
               AwardsButton()
             }
+            NavigationLink(
+              destination: TimelineView(
+                flights: flightInfo.flights.filter {
+                  Calendar.current.isDate(
+                    $0.localTime,
+                    inSameDayAs: Date()
+                  )
+                }
+              )
+            ) {
+              TimelineButton()
+            }
             if
               let id = appEnvironment.lastFlightId,
               let lastFlight = flightInfo.getFlightById(id) {

@@ -30,22 +30,20 @@ import SwiftUI
 
 struct DelayBarChart: View {
   var flight: FlightInformation
-    @State private var showBars = false
+  @State private var showBars = false
 
   let minuteRange = CGFloat(75)
 
-    func minuteLength(_ minutes: Int, proxy: GeometryProxy) -> CGFloat {
-      let pointsPerMinute = proxy.size.width / minuteRange
-      return CGFloat(abs(minutes)) * pointsPerMinute
-    }
-    
-    
-    func minuteOffset(_ minutes: Int, proxy: GeometryProxy) -> CGFloat {
-      let pointsPerMinute = proxy.size.width / minuteRange
-      let offset = minutes < 0 ? 15 + minutes : 15
-      return CGFloat(offset) * pointsPerMinute
-    }
+  func minuteLength(_ minutes: Int, proxy: GeometryProxy) -> CGFloat {
+    let pointsPerMinute = proxy.size.width / minuteRange
+    return CGFloat(abs(minutes)) * pointsPerMinute
+  }
 
+  func minuteOffset(_ minutes: Int, proxy: GeometryProxy) -> CGFloat {
+    let pointsPerMinute = proxy.size.width / minuteRange
+    let offset = minutes < 0 ? 15 + minutes : 15
+    return CGFloat(offset) * pointsPerMinute
+  }
 
   func chartGradient(_ history: FlightHistory) -> Gradient {
     if history.status == .canceled {
@@ -74,10 +72,10 @@ struct DelayBarChart: View {
     let offset = CGFloat(minutes - minMinutes) * pointsPerMinute
     return offset
   }
-    
-    func barAnimation(_ barNumber: Int) -> Animation {
-      return Animation.easeInOut.delay(Double(barNumber) * 0.1)
-    }
+
+  func barAnimation(_ barNumber: Int) -> Animation {
+    return Animation.easeInOut.delay(Double(barNumber) * 0.1)
+  }
 
   var body: some View {
     VStack {
@@ -104,32 +102,24 @@ struct DelayBarChart: View {
                   minuteOffset(history.timeDifference, proxy: proxy) :
                   minuteOffset(0, proxy: proxy)
               )
-              .animation(
-                barAnimation(history.day),
-                value: showBars
-              )
-
-              
-              ForEach(-1..<6) { val in
+              .animation(barAnimation(history.day))
+            ForEach(-1..<6) { val in
               Rectangle()
                 .stroke(val == 0 ? Color.white : Color.gray, lineWidth: 1.0)
                 .frame(width: 1)
                 .offset(x: minuteLocation(val * 10, proxy: proxy))
             }
           }
-            
         }
       }
       .padding()
       .background(
         Color.white.opacity(0.2)
       )
-    }.onAppear {
-        
-          showBars = true
-        
-      }
-      
+    }
+    .onAppear {
+      showBars = true
+    }
   }
 }
 

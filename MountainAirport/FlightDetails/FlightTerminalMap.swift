@@ -115,12 +115,12 @@ struct FlightTerminalMap: View {
   var mapName: String {
     "terminal-\(flight.terminalName)-map".lowercased()
   }
-    
-    var walkingAnimation: Animation {
-      Animation
-        .linear(duration: 3.0)
-        .repeatForever(autoreverses: false)
-    }
+
+  var walkingAnimation: Animation {
+    Animation
+      .linear(duration: 3.0)
+      .repeatForever(autoreverses: false)
+  }
 
   var body: some View {
     Image(mapName)
@@ -128,15 +128,15 @@ struct FlightTerminalMap: View {
       .aspectRatio(contentMode: .fit)
       .overlay(
         GeometryReader { proxy in
-            WalkPath(points: gatePath(proxy))
-              .trim(to: showPath ? 1.0 : 0.0)
-              .stroke(Color.white, lineWidth: 3.0)
-              .animation(walkingAnimation, value: showPath)
-
+          WalkPath(points: gatePath(proxy))
+            .trim(to: showPath ? 1.0 : 0.0)
+            .stroke(Color.white, lineWidth: 3.0)
+            .animation(walkingAnimation)
         }
-      ).onAppear {
-          showPath = true
-        }
+      )
+      .onAppear {
+        showPath = true
+      }
   }
 }
 

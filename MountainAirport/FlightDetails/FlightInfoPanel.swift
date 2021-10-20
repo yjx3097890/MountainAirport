@@ -61,38 +61,51 @@ struct FlightInfoPanel: View {
         Text(flight.flightStatus) + Text(" (\(timeFormatter.string(from: flight.localTime)))")
        
         Button(action: {
+            withAnimation {
+
           showTerminal.toggle()
+            }
         }, label: {
           HStack(alignment: .center) {
               
               Image(systemName: "airplane.circle")
                 .resizable()
                 .frame(width: 30, height: 30)
-                .padding( 10)
+                .padding(10)
                 .rotationEffect(.degrees(showTerminal ? 90 : 270))
-                .animation(Animation.default.speed(0.33), value: showTerminal)
+                .animation(
+                  .spring(
+                    response: 0.55,
+                    dampingFraction: 0.45,
+                    blendDuration: 0
+                  ),
+                value: showTerminal)
               Spacer()
 
     
-            Text(
-              showTerminal ?
-                "Hide Terminal Map" :
-                "Show Terminal Map"
-            )
+              Group {
+                if showTerminal {
+                  Text("Hide Terminal Map")
+                } else {
+                  Text("Show Terminal Map")
+                }
+              }.transition(.slide)
+
+              
             Spacer()
               
-            Image(systemName: "airplane.circle")
-              .resizable()
-              .frame(width: 30, height: 30)
-              .padding(10)
-              .rotationEffect(.degrees(showTerminal ? 90 : 270))
-              .animation(.spring(
-                response: 1,
-                dampingFraction: 0.5,
-                blendDuration: 100.1
-              )
-
-            , value: showTerminal)
+              Image(systemName: "airplane.circle")
+                .resizable()
+                .frame(width: 30, height: 30)
+                .padding( 10)
+                .rotationEffect(.degrees(showTerminal ? 90 : 270))
+                .animation(
+                  .spring(
+                    response: 0.55,
+                    dampingFraction: 0.45,
+                    blendDuration: 0
+                  ),
+                value: showTerminal)
               
           }
         })

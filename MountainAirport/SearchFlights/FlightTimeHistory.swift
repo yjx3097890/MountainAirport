@@ -55,7 +55,9 @@ struct FlightTimeHistory: View {
           .frame(width: 250, height: 250)
           .padding(5)
       }
-    }.foregroundColor(.white)
+    }
+    .frame(width: 375, height: 812)
+    .foregroundColor(.white)
   }
 }
 

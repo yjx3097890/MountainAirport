@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		09298961272166B4004B05AD /* GenericTimeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09298960272166B4004B05AD /* GenericTimeline.swift */; };
 		18D775C522AD944300AE281E /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18D775C422AD944300AE281E /* WelcomeView.swift */; };
 		18D775C722AD944400AE281E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 18D775C622AD944400AE281E /* Assets.xcassets */; };
 		18D775CA22AD944400AE281E /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 18D775C922AD944400AE281E /* Preview Assets.xcassets */; };
@@ -52,6 +53,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		09298960272166B4004B05AD /* GenericTimeline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenericTimeline.swift; sourceTree = "<group>"; };
 		18D775BD22AD944300AE281E /* MountainAirport.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MountainAirport.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		18D775C422AD944300AE281E /* WelcomeView.swift */ = {isa = PBXFileReference; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; tabWidth = 2; };
 		18D775C622AD944400AE281E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -166,6 +168,7 @@
 			children = (
 				A917107C2565C9A300844634 /* TimelineView.swift */,
 				A9D8DFBC2565E823002F521E /* FlightCardView.swift */,
+				09298960272166B4004B05AD /* GenericTimeline.swift */,
 			);
 			path = Timeline;
 			sourceTree = "<group>";
@@ -367,6 +370,7 @@
 				A998D86D25212BB200DC64A7 /* FlightRow.swift in Sources */,
 				A998D87025212BD200DC64A7 /* FlightStatusIcon.swift in Sources */,
 				A9CF243125152C8300EA887E /* AppEnvironment.swift in Sources */,
+				09298961272166B4004B05AD /* GenericTimeline.swift in Sources */,
 				A95D27772524149400788411 /* SearchResultRow.swift in Sources */,
 				A951531F25215880001F6464 /* FlightDetailHeader.swift in Sources */,
 				A952E09E254C891C004687A2 /* FlightStatusButton.swift in Sources */,

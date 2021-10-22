@@ -41,6 +41,7 @@ struct GenericTimeline<Content:View, T>: View where T: Identifiable {
         self.datas = datas
         self.content = content
     }
+    
 
     // 3
     var body: some View {
@@ -56,7 +57,7 @@ struct GenericTimeline<Content:View, T>: View where T: Identifiable {
 
 struct SwiftUIView_Previews: PreviewProvider {
     static var previews: some View {
-        GenericTimeline(
+        GenericTimeline<FlightCardView, FlightInformation>(
             datas: FlightData.generateTestFlights(date: Date())
         ) { flight in
           FlightCardView(flight: flight)

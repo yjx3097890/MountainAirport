@@ -149,7 +149,25 @@ struct FlightCardView: View {
           FlightProgressView(flight: flight, progress: flightTimeFraction(flight: flight))
           ArrivalTimeView(flight: flight)
         }
-    }
+        FlightMapView(
+          startCoordinate: flight.startingAirportLocation,
+          endCoordinate: flight.endingAirportLocation,
+          progress: flightTimeFraction(
+            flight: flight
+          )
+        )
+        .frame(width: 300, height: 300)
+    }.padding()
+          .background(
+            Color.gray.opacity(0.3)
+          )
+          .clipShape(
+            RoundedRectangle(cornerRadius: 20)
+          )
+          .overlay(
+            RoundedRectangle(cornerRadius: 20)
+              .stroke()
+          )
   }
 }
 

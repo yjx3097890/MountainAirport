@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		09298961272166B4004B05AD /* GenericTimeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09298960272166B4004B05AD /* GenericTimeline.swift */; };
+		092989632722998C004B05AD /* FlightMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 092989622722998C004B05AD /* FlightMapView.swift */; };
 		18D775C522AD944300AE281E /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18D775C422AD944300AE281E /* WelcomeView.swift */; };
 		18D775C722AD944400AE281E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 18D775C622AD944400AE281E /* Assets.xcassets */; };
 		18D775CA22AD944400AE281E /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 18D775C922AD944400AE281E /* Preview Assets.xcassets */; };
@@ -54,6 +55,7 @@
 
 /* Begin PBXFileReference section */
 		09298960272166B4004B05AD /* GenericTimeline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenericTimeline.swift; sourceTree = "<group>"; };
+		092989622722998C004B05AD /* FlightMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlightMapView.swift; sourceTree = "<group>"; };
 		18D775BD22AD944300AE281E /* MountainAirport.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MountainAirport.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		18D775C422AD944300AE281E /* WelcomeView.swift */ = {isa = PBXFileReference; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; tabWidth = 2; };
 		18D775C622AD944400AE281E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -169,6 +171,7 @@
 				A917107C2565C9A300844634 /* TimelineView.swift */,
 				A9D8DFBC2565E823002F521E /* FlightCardView.swift */,
 				09298960272166B4004B05AD /* GenericTimeline.swift */,
+				092989622722998C004B05AD /* FlightMapView.swift */,
 			);
 			path = Timeline;
 			sourceTree = "<group>";
@@ -343,6 +346,7 @@
 				A98E3C51255596B200C1974E /* AwardGrid.swift in Sources */,
 				A92AE318252785770076F3B9 /* DateExtensions.swift in Sources */,
 				A93AD0F6253364B400182D1B /* AwardDetails.swift in Sources */,
+				092989632722998C004B05AD /* FlightMapView.swift in Sources */,
 				A9AB45A6252E697800DC8653 /* AwardsView.swift in Sources */,
 				A952E0A1254C891C004687A2 /* LastViewedButton.swift in Sources */,
 				A97A0713254F12B0002963BF /* HistoryPieChart.swift in Sources */,
